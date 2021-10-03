@@ -1,0 +1,97 @@
+{
+  "resources": [
+    {
+      "name": "default-allow-http",
+      "type": "compute.v1.firewall",
+      "properties": {
+        "network": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/global/networks/default",
+        "priority": 1000,
+        "direction": "INGRESS",
+        "targetTags": [
+          "http-server"
+        ],
+        "allowed": [
+          {
+            "IPProtocol": "tcp",
+            "ports": [
+              "80"
+            ]
+          }
+        ],
+        "sourceRanges": [
+          "0.0.0.0/0"
+        ]
+      }
+    },
+    {
+      "name": "default-allow-https",
+      "type": "compute.v1.firewall",
+      "properties": {
+        "network": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/global/networks/default",
+        "priority": 1000,
+        "direction": "INGRESS",
+        "targetTags": [
+          "https-server"
+        ],
+        "allowed": [
+          {
+            "IPProtocol": "tcp",
+            "ports": [
+              "443"
+            ]
+          }
+        ],
+        "sourceRanges": [
+          "0.0.0.0/0"
+        ]
+      }
+    },
+    {
+      "name": "[INSTANCE_NAME]",
+      "type": "compute.v1.instance",
+      "properties": {
+        "zone": "us-central1-f",
+        "machineType": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/us-central1-f/machineTypes/e2-standard-2",
+        "disks": [
+          {
+            "deviceName": "[DISK_NAME]",
+            "type": "PERSISTENT",
+            "boot": true,
+            "autoDelete": true,
+            "diskSizeGb": 50,
+            "initializeParams": {
+              "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+            }
+          }
+        ],
+        "networkInterfaces": [
+          {
+            "network": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/global/networks/default",
+            "accessConfigs": [
+              {
+                "name": "External NAT",
+                "type": "ONE_TO_ONE_NAT"
+              }
+            ]
+          }
+        ],
+        "tags": {
+          "items": [
+            "http-server",
+            "https-server"
+          ]
+        },
+        "metadata": {
+          "items": [
+            {
+              "key": "startup-script",
+              "value": "cd /home/ubuntu; wget https://cloudbridge-release-nightly.s3.amazonaws.com/conversions-api-gateway-1.0.1-5d42ddeb15d1f9fdc88e6ab5f8b35d1e2edfcab8-2021-09-30T12_32_42-adhoc-ajaykedia_provision_web.run; chmod a+x conversions-api-gateway-1.0.1-5d42ddeb15d1f9fdc88e6ab5f8b35d1e2edfcab8-2021-09-30T12_32_42-adhoc-ajaykedia_provision_web.run; ./conversions-api-gateway-1.0.1-5d42ddeb15d1f9fdc88e6ab5f8b35d1e2edfcab8-2021-09-30T12_32_42-adhoc-ajaykedia_provision_web.run --target /opt/cloudbridge_provision_web -- \"[INSTANCE_NAME]\"; wget https://cloudbridge-release-nightly.s3.amazonaws.com/conversions-api-gateway-1.0.1-5d42ddeb15d1f9fdc88e6ab5f8b35d1e2edfcab8-2021-09-30T12_32_42-adhoc-ajaykedia.run; chmod a+x conversions-api-gateway-1.0.1-5d42ddeb15d1f9fdc88e6ab5f8b35d1e2edfcab8-2021-09-30T12_32_42-adhoc-ajaykedia.run; ./conversions-api-gateway-1.0.1-5d42ddeb15d1f9fdc88e6ab5f8b35d1e2edfcab8-2021-09-30T12_32_42-adhoc-ajaykedia.run --target /opt/cloudbridge -- \"oneboxcluster_bare\" \"[EMAIL_ID]\" \"[CLOUDBRIDGE_PASSWORD]\" \"[CLOUDBRIDGE_PROVISIONING_DATA]\" \"[SUBDOMAIN]\" \"[TELEMETRY_ENABLED]\" 1 \"1.0.0-gcp\" >> /var/log/cloud-init-output.log;"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+
+
