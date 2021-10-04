@@ -50,8 +50,8 @@
       "name": "[INSTANCE_NAME]",
       "type": "compute.v1.instance",
       "properties": {
-        "zone": "us-central1-f",
-        "machineType": "zones/us-central1-f/machineTypes/e2-standard-2",
+        "zone": "[ZONE_NAME]",
+        "machineType": "zones/[ZONE_NAME]/machineTypes/[MACHINE_TYPE]",
         "disks": [
           {
             "deviceName": "[DISK_NAME]",
