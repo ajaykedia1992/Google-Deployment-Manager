@@ -4,7 +4,7 @@
       "name": "default-allow-http",
       "type": "compute.v1.firewall",
       "properties": {
-        "network": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/global/networks/default",
+        "network": "global/networks/default",
         "priority": 1000,
         "direction": "INGRESS",
         "targetTags": [
@@ -27,7 +27,7 @@
       "name": "default-allow-https",
       "type": "compute.v1.firewall",
       "properties": {
-        "network": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/global/networks/default",
+        "network": "global/networks/default",
         "priority": 1000,
         "direction": "INGRESS",
         "targetTags": [
@@ -51,7 +51,7 @@
       "type": "compute.v1.instance",
       "properties": {
         "zone": "us-central1-f",
-        "machineType": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/zones/us-central1-f/machineTypes/e2-standard-2",
+        "machineType": "zones/us-central1-f/machineTypes/e2-standard-2",
         "disks": [
           {
             "deviceName": "[DISK_NAME]",
@@ -60,13 +60,13 @@
             "autoDelete": true,
             "diskSizeGb": 50,
             "initializeParams": {
-              "sourceImage": "https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+              "sourceImage": "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
             }
           }
         ],
         "networkInterfaces": [
           {
-            "network": "https://www.googleapis.com/compute/v1/projects/[PROJECT_ID]/global/networks/default",
+            "network": "global/networks/default",
             "accessConfigs": [
               {
                 "name": "External NAT",
@@ -93,5 +93,3 @@
     }
   ]
 }
-
-
