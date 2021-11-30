@@ -1,0 +1,95 @@
+{
+  "resources": [
+    {
+      "name": "default-allow-http",
+      "type": "compute.v1.firewall",
+      "properties": {
+        "network": "global/networks/default",
+        "priority": 1000,
+        "direction": "INGRESS",
+        "targetTags": [
+          "http-server"
+        ],
+        "allowed": [
+          {
+            "IPProtocol": "tcp",
+            "ports": [
+              "80"
+            ]
+          }
+        ],
+        "sourceRanges": [
+          "0.0.0.0/0"
+        ]
+      }
+    },
+    {
+      "name": "default-allow-https",
+      "type": "compute.v1.firewall",
+      "properties": {
+        "network": "global/networks/default",
+        "priority": 1000,
+        "direction": "INGRESS",
+        "targetTags": [
+          "https-server"
+        ],
+        "allowed": [
+          {
+            "IPProtocol": "tcp",
+            "ports": [
+              "443"
+            ]
+          }
+        ],
+        "sourceRanges": [
+          "0.0.0.0/0"
+        ]
+      }
+    },
+    {
+      "name": "[INSTANCE_NAME]",
+      "type": "compute.v1.instance",
+      "properties": {
+        "zone": "[ZONE]",
+        "machineType": "zones/[ZONE]/machineTypes/[MACHINE_TYPE]",
+        "disks": [
+          {
+            "deviceName": "[DISK_NAME]",
+            "type": "PERSISTENT",
+            "boot": true,
+            "autoDelete": true,
+            "diskSizeGb": 50,
+            "initializeParams": {
+              "sourceImage": "projects/ubuntu-os-cloud/global/images/family/ubuntu-2004-lts"
+            }
+          }
+        ],
+        "networkInterfaces": [
+          {
+            "network": "global/networks/default",
+            "accessConfigs": [
+              {
+                "name": "External NAT",
+                "type": "ONE_TO_ONE_NAT"
+              }
+            ]
+          }
+        ],
+        "tags": {
+          "items": [
+            "http-server",
+            "https-server"
+          ]
+        },
+        "metadata": {
+          "items": [
+            {
+              "key": "startup-script",
+              "value": "wget [PROVISION_WEB_URL] --referer=\"[SUBDOMAIN]\"; chmod a+x [PROVISION_WEB_FILENAME]; ./[PROVISION_WEB_FILENAME] --target /opt/cloudbridge_provision_web -- \"[INSTANCE_NAME]\"; wget [CAPIG_SCRIPT_URL] --referer=\"[SUBDOMAIN]\"; chmod a+x [CAPIG_SCRIPT_FILENAME]; ./[CAPIG_SCRIPT_FILENAME] --target /opt/cloudbridge -- \"oneboxcluster_bare_multitenant\" \"[EMAIL_ID]\" \"[CLOUDBRIDGE_PASSWORD]\" \"[CLOUDBRIDGE_PROVISIONING_DATA]\" \"[SUBDOMAIN]\" \"[TELEMETRY_ENABLED]\" 1 \"prod\" \"false\" >> /var/log/cloud-init-output.log;"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
