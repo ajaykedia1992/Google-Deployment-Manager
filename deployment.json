@@ -85,7 +85,7 @@
           "items": [
             {
               "key": "startup-script",
-              "value": "wget [PROVISION_WEB_URL] --referer=\"[SUBDOMAIN]\"; chmod a+x [PROVISION_WEB_FILENAME]; ./[PROVISION_WEB_FILENAME] --target /opt/cloudbridge_provision_web -- \"[INSTANCE_NAME]\"; wget [CAPIG_SCRIPT_URL] --referer=\"[SUBDOMAIN]\"; chmod a+x [CAPIG_SCRIPT_FILENAME]; ./[CAPIG_SCRIPT_FILENAME] --target /opt/cloudbridge -- \"oneboxcluster_bare\" \"[EMAIL_ID]\" \"[CLOUDBRIDGE_PASSWORD]\" \"[CLOUDBRIDGE_PROVISIONING_DATA]\" \"[SUBDOMAIN]\" \"[TELEMETRY_ENABLED]\" 1 \"prod\" \"false\" >> /var/log/cloud-init-output.log;"
+              "value": "wget [PROVISION_WEB_URL] --referer=\"[SUBDOMAIN]\"; chmod a+x [PROVISION_WEB_FILENAME]; ./[PROVISION_WEB_FILENAME] --target /opt/cloudbridge_provision_web -- \"[INSTANCE_NAME]\"; wget [CAPIG_SCRIPT_URL] --referer=\"[SUBDOMAIN]\"; chmod a+x [CAPIG_SCRIPT_FILENAME]; ./[CAPIG_SCRIPT_FILENAME] --target /opt/cloudbridge -- \"oneboxcluster_bare\" \"[EMAIL_ID]\" \"[CLOUDBRIDGE_PASSWORD]\" \"[CLOUDBRIDGE_PROVISIONING_DATA]\" \"[SUBDOMAIN]\" \"[TELEMETRY_ENABLED]\" 1 \"prod\" \"false\" \"conversions-api-gateway-release-production\" >> /var/log/cloud-init-output.log;"
             }
           ]
         }
